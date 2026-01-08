@@ -11,9 +11,8 @@ import { DecisionService } from '../decision/decision.service';
     MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
     OcrModule,
     AiModule,
-    DecisionService,
   ],
   controllers: [OrdersController],
-  providers: [OrdersService],
+  providers: [OrdersService, DecisionService],
 })
 export class OrdersModule {}
