@@ -1,0 +1,68 @@
+{
+  "name": "Order AI Processing Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "order-ai",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      },
+      "name": "Incoming Order (Webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/orders/process",
+        "method": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "={{$json}}"
+      },
+      "name": "Send to NestJS Backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json.approved}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Is Auto Approved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [800, 300]
+    }
+  ],
+  "connections": {
+    "Incoming Order (Webhook)": {
+      "main": [
+        [
+          {
+            "node": "Send to NestJS Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to NestJS Backend": {
+      "main": [
+        [
+          {
+            "node": "Is Auto Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
