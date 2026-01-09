@@ -1,98 +1,277 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🚀 Order AI Backend (NestJS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+AI-powered backend system to process **printed paper orders** using OCR + rule-based AI, with **auto-approval**, **admin review**, and **workflow automation (n8n-ready)**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+> Built for real-world warehouse & operations use cases.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🧠 What Problem This Solves
 
-## Project setup
+Companies processing **hundreds of printed orders daily** suffer from:
 
-```bash
-$ npm install
+* Manual calculations
+* Human errors
+* Slow review cycles
+
+This system:
+
+* Reads printed orders (any format)
+* Extracts products automatically
+* Calculates totals & confidence
+* Auto-approves high-confidence orders
+* Sends low-confidence orders for admin review
+
+---
+
+## ✨ Features
+
+* ✅ OCR from images (Tesseract – 100% free)
+* ✅ Rule-based AI (no paid APIs)
+* ✅ Confidence scoring per order
+* ✅ Auto approval / manual review
+* ✅ Admin approval dashboard (API)
+* ✅ Auth + JWT (Admin / Reviewer roles)
+* ✅ MongoDB persistence
+* ✅ Audit logs (who approved what)
+* ✅ n8n workflow ready
+
+---
+
+## 🏗️ Architecture Overview
+
+```
+Client (Postman / Frontend)
+        │
+        ▼
+NestJS API
+        │
+        ├── OCR Module (Image → Text)
+        ├── AI Module (Parse Products)
+        ├── Decision Engine (Approve / Review)
+        ├── Orders Module (DB)
+        └── Auth Module (JWT)
 ```
 
-## Compile and run the project
+---
+
+## 🧱 Tech Stack
+
+* **Backend:** NestJS (TypeScript)
+* **Database:** MongoDB + Mongoose
+* **Auth:** Passport + JWT
+* **OCR:** Tesseract.js
+* **AI:** Rule-based + fuzzy matching
+* **Automation:** n8n (Webhook ready)
+
+---
+
+## 📦 Project Structure
+
+```
+src/
+│
+├── auth/        # JWT auth & login
+├── users/       # Admin & reviewer users
+├── orders/      # Order processing logic
+├── ocr/         # OCR extraction
+├── ai/          # AI parsing logic
+├── decision/    # Auto-approval engine
+├── audit/       # Approval logs
+├── data/        # Products list
+│
+├── app.module.ts
+├── main.ts
+└── seed.ts      # Create admin user
+```
+
+---
+
+## ⚙️ Installation
+
+```bash
+# clone repo
+git clone https://github.com/sherifharby/order-ai-backend.git
+cd order-ai-backend
+
+# install deps
+npm install
+```
+
+---
+
+## 🔑 Environment Variables
+
+Create `.env`
+
+```env
+MONGO_URI=mongodb://localhost:27017/order-ai
+JWT_SECRET=supersecret
+```
+
+---
+
+## ▶️ Run Project
 
 ```bash
 # development
-$ npm run start
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# production
+npm run build
+npm run start
 ```
 
-## Run tests
+Server runs on:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🌱 Seed Admin User
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npx ts-node src/seed.ts
 ```
 
-## Deployment
+Default admin:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+email: admin@test.com
+password: 123456
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🔐 Authentication
 
-Check out a few resources that may come in handy when working with NestJS:
+### Login
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+`POST /auth/login`
 
-## Support
+```json
+{
+  "email": "admin@test.com",
+  "password": "123456"
+}
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Response:
 
-## Stay in touch
+```json
+{
+  "access_token": "JWT_TOKEN"
+}
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Use token as:
 
-## License
+```
+Authorization: Bearer <token>
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## 📦 Orders API
+
+### Process Order (OCR + AI)
+
+`POST /orders/process`
+
+**Form-Data**
+
+* `file` → image of printed order
+
+Response:
+
+```json
+{
+  "items": [],
+  "confidence": 0.91,
+  "status": "approved"
+}
+```
+
+---
+
+### Approve Order
+
+`PATCH /orders/:id/approve`
+
+---
+
+## 🧠 Decision Engine Logic
+
+```ts
+if (confidence >= 0.85) {
+  autoApprove = true;
+} else {
+  manualReview = true;
+}
+```
+
+This reduces admin workload dramatically.
+
+---
+
+## 🤖 AI Engine (No Paid APIs)
+
+* Rule-based parsing
+* Product list matching
+* Size & quantity detection
+* Confidence scoring
+
+✅ Works offline
+✅ Zero cost
+
+---
+
+## 🔁 n8n Integration
+
+The system can:
+
+* Send webhook on new order
+* Trigger approval workflows
+* Notify admins automatically
+
+n8n workflow JSON included.
+
+---
+
+## 📈 Why This Project Matters
+
+This project demonstrates:
+
+* Real business problem solving
+* Clean NestJS architecture
+* AI without expensive APIs
+* Automation mindset
+* Production-ready backend
+
+Perfect for:
+
+* Backend roles
+* Automation roles
+* AI-integrated systems
+
+---
+
+## 🛣️ Future Improvements
+
+* Swagger API docs
+* Frontend dashboard
+* AI learning from admin edits
+* Multi-warehouse support
+
+---
+
+## 👨‍💻 Author
+
+**Sherif Harby**
+
+* Backend Engineer (NestJS / Node.js)
+* Automation & AI Systems
+
+🔗 LinkedIn: *www.linkedin.com/in/sherif-harby*
